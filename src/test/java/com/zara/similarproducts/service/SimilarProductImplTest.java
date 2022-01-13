@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.springframework.web.client.RestClientException;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -54,7 +55,7 @@ public class SimilarProductImplTest {
     }
 
     @Test
-    public void should_return_zero_elements_when_all_throw_exception() throws ProductRepositoryException, ProductServiceException {
+    public void should_return_empty_list_when_all_throw_exception() throws ProductRepositoryException, ProductServiceException {
         Mockito.when(this.repository.getSimilarProduct(Mockito.anyString())).thenReturn(List.of("1","2","3"));
         Mockito.when(this.repository.getProductDetail(Mockito.anyString())).thenThrow(new ProductRepositoryException("Error"));
 
@@ -66,7 +67,13 @@ public class SimilarProductImplTest {
     @Test
     public void should_return_exception_when_similar_product_return_error() throws ProductRepositoryException {
         Mockito.when(this.repository.getSimilarProduct(Mockito.anyString())).thenThrow(new ProductRepositoryException("Error"));
-        Assertions.assertThrows(ProductServiceException.class, () -> {this.service.getSimilarProducts("1");});
+        Assertions.assertThrows(ProductServiceException.class, () -> this.service.getSimilarProducts("1"));
+    }
+
+    @Test
+    public void should_return_exception_when_rest_client_failed() throws ProductRepositoryException {
+        Mockito.when(this.repository.getSimilarProduct(Mockito.anyString())).thenThrow(new RestClientException("Error"));
+        Assertions.assertThrows(ProductServiceException.class, () -> this.service.getSimilarProducts("1"));
     }
 
     private ProductDetail buildProductId1() {

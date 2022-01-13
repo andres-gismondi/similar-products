@@ -23,10 +23,10 @@ public class SimilarProductController {
     @Autowired
     private SimilarProductService similarProductService;
 
-    @GetMapping( "/{id}/similar")
-    public ResponseEntity<List<ProductDetailResponse>> getSimilarProducts(@PathVariable String id) throws ProductServiceException {
-        logger.info("Executing endpoint to get similar products by id: [{}]", id);
-        List<ProductDetailResponse> response = this.similarProductService.getSimilarProducts(id);
+    @GetMapping( "/{productId}/similar")
+    public ResponseEntity<List<ProductDetailResponse>> getSimilarProducts(@PathVariable String productId) throws ProductServiceException {
+        logger.info("Executing endpoint to get similar products by id: [{}]", productId);
+        List<ProductDetailResponse> response = this.similarProductService.getSimilarProducts(productId);
         return ResponseEntity.ok(response);
     }
 

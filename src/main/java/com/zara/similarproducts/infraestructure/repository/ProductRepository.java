@@ -31,7 +31,7 @@ public class ProductRepository implements SimilarProductRepository {
         ResponseEntity<ProductDetail> response = this.repository.getProductId(id);
         this.validateResponse(response.getStatusCodeValue());
 
-        logger.info("Client product detail response: [{}]", response.getBody().toString());
+        logger.info("Client product detail response: [{}]", response.getBody());
         return response.getBody();
     }
 
@@ -47,12 +47,15 @@ public class ProductRepository implements SimilarProductRepository {
     }
 
     private void validateId(String id) throws ProductRepositoryException {
-        if (StringUtils.isBlank(id)) {
+        if (StringUtils.isEmpty(id)) {
             throw new ProductRepositoryException("ProductId can not be null or empty");
         }
     }
 
     private void validateResponse(int statusCode) throws ProductRepositoryException {
+        if (statusCode == 404) {
+            throw new ProductRepositoryException("Product not found");
+        }
         if (statusCode < 200 || statusCode >= 300) {
             throw new ProductRepositoryException("Status code is not correct");
         }
