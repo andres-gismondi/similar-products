@@ -63,6 +63,12 @@ public class SimilarProductImplTest {
         Assertions.assertEquals(0, response.size());
     }
 
+    @Test
+    public void should_return_exception_when_similar_product_return_error() throws ProductRepositoryException {
+        Mockito.when(this.repository.getSimilarProduct(Mockito.anyString())).thenThrow(new ProductRepositoryException("Error"));
+        Assertions.assertThrows(ProductServiceException.class, () -> {this.service.getSimilarProducts("1");});
+    }
+
     private ProductDetail buildProductId1() {
         ProductDetail productDetail = new ProductDetail();
         productDetail.setId("1");
