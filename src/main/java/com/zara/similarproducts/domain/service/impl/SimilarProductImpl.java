@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 public class SimilarProductImpl implements SimilarProductService {
@@ -31,12 +33,29 @@ public class SimilarProductImpl implements SimilarProductService {
     public List<ProductDetailResponse> getSimilarProducts(String id) throws ProductServiceException {
         logger.info("Executing service with id: [{}]", id);
         try {
-            List<ProductDetail> products = this.repository.getSimilarProduct(id);
+            List<String> ids = this.repository.getSimilarProduct(id);
+            List<ProductDetail> products = this.getProducts(ids);
             return this.mapper.mapToSimilarProductResponse(products);
         } catch (Exception e) {
             logger.error("Error getting similar products", e);
             throw new ProductServiceException("Error getting similar products", e);
         }
+    }
+
+    private List<ProductDetail> getProducts(List<String> ids) {
+        return ids.stream()
+                .map(this::getProductDetail)
+                .filter(product -> Objects.nonNull(product.getId()))
+                .collect(Collectors.toList());
+    }
+
+    private ProductDetail getProductDetail(String id) {
+        try {
+            return this.repository.getProductDetail(id);
+        } catch (Exception e) {
+            logger.warn("Product detail not found. Returning empty object");
+        }
+        return new ProductDetail();
     }
 
 }

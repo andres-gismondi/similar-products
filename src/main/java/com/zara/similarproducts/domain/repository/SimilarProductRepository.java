@@ -9,6 +9,6 @@ public interface SimilarProductRepository {
 
     ProductDetail getProductDetail(String id) throws ProductRepositoryException;
 
-    List<ProductDetail> getSimilarProduct(String id) throws ProductRepositoryException;
+    List<String> getSimilarProduct(String id) throws ProductRepositoryException;
 
 }

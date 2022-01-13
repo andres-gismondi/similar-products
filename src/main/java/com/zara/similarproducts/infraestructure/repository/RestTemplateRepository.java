@@ -23,7 +23,7 @@ public class RestTemplateRepository {
         this.restTemplate = restTemplate;
     }
 
-    public ResponseEntity<List<ProductDetail>> getProductSimilarId(String productId) {
+    public ResponseEntity<List<String>> getProductIds(String productId) {
         String finalUrl = String.format(PRODUCT_SIMILAR_ID, productId);
         return this.restTemplate.exchange(finalUrl, HttpMethod.GET,null ,new ParameterizedTypeReference<>(){});
     }
