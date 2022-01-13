@@ -38,14 +38,14 @@ public class SimilarProductImpl implements SimilarProductService {
             return this.mapper.mapToSimilarProductResponse(products);
         } catch (Exception e) {
             logger.error("Error getting similar products", e);
-            throw new ProductServiceException("Error getting similar products", e);
+            throw new ProductServiceException("Product not found", e);
         }
     }
 
     private List<ProductDetail> getProducts(List<String> ids) {
         return ids.stream()
                 .map(this::getProductDetail)
-                .filter(product -> Objects.nonNull(product.getId()))
+                .filter(Objects::nonNull)
                 .collect(Collectors.toList());
     }
 
@@ -53,9 +53,9 @@ public class SimilarProductImpl implements SimilarProductService {
         try {
             return this.repository.getProductDetail(id);
         } catch (Exception e) {
-            logger.warn("Product detail not found. Returning empty object");
+            logger.warn("Product detail not found");
         }
-        return new ProductDetail();
+        return null;
     }
 
 }
