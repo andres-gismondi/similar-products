@@ -19,7 +19,7 @@ public class BeanConfiguration {
 
     @Bean
     public RestTemplate restTemplate(RestTemplateBuilder builder) {
-        String baseUrl = env.getProperty("rest_client_default_url", "http://localhost:5000");
+        String baseUrl = env.getProperty("rest_client_default_url", "http://localhost:3001");
         return builder.uriTemplateHandler(new DefaultUriBuilderFactory(baseUrl)).build();
     }
 
