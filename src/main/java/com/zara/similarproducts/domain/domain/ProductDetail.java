@@ -40,4 +40,14 @@ public class ProductDetail {
     public void setAvailability(Boolean availability) {
         this.availability = availability;
     }
+
+    @Override
+    public String toString() {
+        return "{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", price=" + price +
+                ", availability=" + availability +
+                '}';
+    }
 }

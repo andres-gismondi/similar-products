@@ -26,23 +26,23 @@ public class ProductRepository implements SimilarProductRepository {
 
     @Override
     public ProductDetail getProductDetail(String id) throws ProductRepositoryException {
-        logger.info("Getting client product-detail by id: [{}]", id);
         this.validateId(id);
 
         ResponseEntity<ProductDetail> response = this.repository.getProductId(id);
         this.validateResponse(response.getStatusCodeValue());
 
+        logger.info("Client product detail response: [{}]", response.getBody().toString());
         return response.getBody();
     }
 
     @Override
     public List<String> getSimilarProduct(String id) throws ProductRepositoryException {
-        logger.info("Getting client similar-product by id: [{}]", id);
         this.validateId(id);
 
         ResponseEntity<List<String>> response = this.repository.getProductIds(id);
         this.validateResponse(response.getStatusCodeValue());
 
+        logger.info("Client similar products response: [{}]", response.getBody());
         return response.getBody();
     }
 

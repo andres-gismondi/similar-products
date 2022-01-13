@@ -1,5 +1,6 @@
 package com.zara.similarproducts.application.controller;
 
+import com.zara.similarproducts.application.exception.ProductServiceException;
 import com.zara.similarproducts.application.response.ProductDetailResponse;
 import com.zara.similarproducts.domain.service.SimilarProductService;
 import org.slf4j.Logger;
@@ -22,9 +23,9 @@ public class SimilarProductController {
     @Autowired
     private SimilarProductService similarProductService;
 
-    @GetMapping( "/{productId}/similar")
-    public ResponseEntity<List<ProductDetailResponse>> getSimilarProducts(@PathVariable String id) {
-        logger.info("Executing endpointto get similar product by id: [{}]", id);
+    @GetMapping( "/{id}/similar")
+    public ResponseEntity<List<ProductDetailResponse>> getSimilarProducts(@PathVariable String id) throws ProductServiceException {
+        logger.info("Executing endpoint to get similar products by id: [{}]", id);
         List<ProductDetailResponse> response = this.similarProductService.getSimilarProducts(id);
         return ResponseEntity.ok(response);
     }
